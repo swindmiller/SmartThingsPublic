@@ -1299,15 +1299,17 @@ def customCSS() {
 .tile.presence[data-device='5f181f7a-ca13-47a6-96c4-ddc3b05b147f'] .icon i.active:before {content : ""}
 .tile.presence[data-device='b40cff46-b4c1-4079-b8bb-72e8d82c22b7'] .icon i.inactive:before {content : ""}
 .tile.presence[data-device='b40cff46-b4c1-4079-b8bb-72e8d82c22b7'] .icon i.active:before {content : ""}
-.tile.switch[data-device='fb5ed1c6-0b3d-404d-a303-7ec74e65998b'] .icon i.inactive:before {content : ""}
-.tile.switch[data-device='fb5ed1c6-0b3d-404d-a303-7ec74e65998b'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanDisarmed.png);position:relative;right:15px;top:5px}
-.tile.switch[data-device='70128288-f048-4700-b20c-c1eaee22130f'] .icon i.inactive:before {content : ""}
-.tile.switch[data-device='70128288-f048-4700-b20c-c1eaee22130f'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanArmed.png);position:relative;right:15px;top:5px}
-.tile.switch[data-device='71c4d9de-0cd2-4a67-ae32-7782e805ea2e'] .icon i.inactive:before {content : ""}
-.tile.switch[data-device='71c4d9de-0cd2-4a67-ae32-7782e805ea2e'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanStay.png);position:relative;right:15px;top:5px}
+.tile.switch[data-device='61ae9c40-a5e9-4d31-9a9d-867b00f4bf59'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='61ae9c40-a5e9-4d31-9a9d-867b00f4bf59'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanDisarmed.png);position:relative;right:15px;top:5px}
+.tile.switch[data-device='8282a392-9eeb-433f-96e9-82960d07455b'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='8282a392-9eeb-433f-96e9-82960d07455b'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanArmed.png);position:relative;right:15px;top:5px}
+.tile.switch[data-device='a23fd32a-3ccb-4f3a-97ac-ba6ef7f84fa6'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='a23fd32a-3ccb-4f3a-97ac-ba6ef7f84fa6'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanStay.png);position:relative;right:15px;top:5px}
 .dashboard.tile[data-link-i="1"] .icon a i::before {content: "";}
 .tile.switch[data-device='33c6edc1-9035-4983-bf0b-63dd957e35f1'] .icon i.inactive:before {content : ""}
 .tile.switch[data-device='33c6edc1-9035-4983-bf0b-63dd957e35f1'] .icon i.active:before {content : "";color:#FFFF00}
+.tile.contact[data-device='fab2129e-ff3c-4b4e-94f2-fc286df0dbe2'] .icon i.active:before {;color:#59FF00}
+.tile.contact[data-device='fab2129e-ff3c-4b4e-94f2-fc286df0dbe2'] .icon i.inactive:before {;color:#990000}
 .history-list .presence i:before {content: "";}
 /*** Custonm CSS End *****/
 </style>
