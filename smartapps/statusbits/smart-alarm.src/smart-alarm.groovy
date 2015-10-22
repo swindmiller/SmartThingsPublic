@@ -1354,7 +1354,7 @@ def reset() {
     clearAlarm()
 
     // Send notification
-    def msg = "${location.name} is "
+    def msg = ""
     if (state.armed) {
         msg += "ARMED "
         msg += state.stay ? "STAY" : "AWAY"
@@ -1430,11 +1430,11 @@ private def armPanel(stay) {
     }
 
     def mode = stay ? "STAY" : "AWAY"
-    def msg = "${location.name} "
+    def msg = ""
     if (delay) {
         msg += "will arm ${mode} in ${state.delay} seconds."
     } else {
-        msg += "is ARMED ${mode}."
+        msg += "ARMED ${mode}."
     }
 
     notify(msg)
@@ -1630,7 +1630,7 @@ private def notify(msg) {
         }
 
         if (settings.pushbulletStatus && settings.pushbullet) {
-            settings.pushbullet*.push(location.name, msg)
+            settings.pushbullet*.push(msg, msg)
         }
     }
 }

@@ -1,0 +1,209 @@
+/**
+ *  Thermostat Setpoints using Virtual Momentary Dimmers
+ *
+ *  Copyright 2015 Joseph Quander III
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ *  in compliance with the License. You may obtain a copy of the License at:
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
+ *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
+ *  for the specific language governing permissions and limitations under the License.
+ *
+ *	Adapted/Inspired from App created by @mattjfrank
+ *
+ *	Date: 2015-08-25 Version 1.0 - Created App: Based on my Original version with Virtual Dimmer Switch instead of my custom Momentary Dimmer device type.
+ * 	Date: 2015-08-25 Version 1.1 - Modified App: Re-added with on/off and return commands
+ *	Date: 2015-08-26 Version 2.0 - Modified App: Replace setHeatingSetpoint()/setCoolingSetpoint() with quickSetHeat()/quickSetCool(), since the quick set
+ *									command for the Thermostat device type has a much shorter delay action. Cleaned up unused/left over code.
+ *									
+ */
+definition(
+    name: "Thermostat Setpoints: V-Momentary Dimmers v2",
+    namespace: "DR",
+    author: "Joseph Quander III",
+    description: "This app uses two custom virtual momentary dimmer switches to control Setpoint temperatures on a Thermostat.  This was develop to use with the Amazon Echo.",
+    category: "Green Living",
+    iconUrl: "https://s3.amazonaws.com/smartapp-icons/Meta/temp_thermo-switch.png",
+    iconX2Url: "https://s3.amazonaws.com/smartapp-icons/Meta/temp_thermo-switch@2x.png",
+    iconX3Url: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience@2x.png"
+    
+    )
+    
+    
+preferences {
+section("Select Heating SetPoint Dimmer") { 
+	input "Heating", "capability.momentary", 
+		multiple: false, 
+		title: "Heating Dimmer Switch...", 
+		required: true
+}
+
+section("Select Cooling SetPoint Dimmer") { 
+	input "Cooling", "capability.momentary", 
+		multiple: false, 
+		title: "Cooling Dimmer Switch...", 
+		required: true
+}
+
+section("This thermostat will be updated") {
+	input "thermostat", "capability.thermostat", 
+		multiple: false, 
+		title: "Thermostat", 
+		required: true
+}
+
+section("Setpoint Default Limits: Minimum/Maximum [50/80]") {
+	input "setMinimum", "number", 
+		multiple: false, 
+		title: "Minimum Temperature", 
+		required: true,
+        defaultValue: "50"
+
+	input "setMaximum", "number", 
+		multiple: false, 
+		title: "Maximum Temperature", 
+		required: true,
+        defaultValue: "80"
+}
+
+    section("Notify me...") {
+     input "pushNotification_Setpoint", "bool", title: "Thermostat Mode change with Push Notification", required: false, defaultValue: "false"
+}
+}
+
+def installed()
+{
+
+    subscribe(Heating, "switch.setLevel", switchSetLevelHandlerH)
+    subscribe(Heating, "switch", switchSetLevelHandlerH)
+    subscribe(Cooling, "switch.setLevel", switchSetLevelHandlerC)
+    subscribe(Cooling, "switch", switchSetLevelHandlerC)
+        subscribe(thermostat, "heatingSetpoint", heatingSetpointHandler)
+        subscribe(thermostat, "coolingSetpoint", coolingSetpointHandler)
+	log.debug "Installed with settings: ${settings}"
+}
+
+def updated()
+{
+unsubscribe()
+    subscribe(Heating, "switch.setLevel", switchSetLevelHandlerH)
+    subscribe(Heating, "switch", switchSetLevelHandlerH)
+    subscribe(Cooling, "switch.setLevel", switchSetLevelHandlerC)
+    subscribe(Cooling, "switch", switchSetLevelHandlerC)
+        subscribe(thermostat, "heatingSetpoint", heatingSetpointHandler)
+        subscribe(thermostat, "coolingSetpoint", coolingSetpointHandler)
+	log.info "subscribed to all of switches events"
+	log.debug "Updated with settings: ${settings}"
+}
+
+def TempMode = null
+
+//------------------Level-Heat---------------------
+def switchSetLevelHandlerH(evt){
+def TempMode = "Heating"
+state.TempMode = TempMode
+if ((evt.value == "on") || (evt.value == "off" ))
+	return
+def level = evt.value.toFloat()
+//log.debug "level: $level"
+level = level.toInteger()
+state.level = level
+
+if(state.level<setMinimum){
+state.level=setMinimum
+Heating.setLevel(state.level)
+log.debug "Thermostat SetLevel below limit: $level.  Reset to minimum Temperature: $setMinimum"
+}else if(state.level>setMaximum){
+state.level=setMaximum
+Heating.setLevel(state.level)
+log.debug "Thermostat SetLevel below limit: $level.  Reset to maximum Temperature: $setMaximum"
+}
+
+log.debug "switchSetLevelHandler Event: ${state.level} | TempMode: $TempMode"
+    state.ThermoHPoint = thermostat.currentValue("heatingSetpoint")
+//thermostat.setHeatingSetpoint(state.level)
+thermostat.quickSetHeat(state.level)
+log.debug "state.ThermoHPoint: $state.ThermoHPoint"
+}
+
+//------------------Level-Cool---------------------
+def switchSetLevelHandlerC(evt){
+def TempMode = "Cooling"
+state.TempMode = TempMode
+if ((evt.value == "on") || (evt.value == "off" ))
+	return
+def level = evt.value.toFloat()
+//log.debug "level: $level"
+level = level.toInteger()
+state.level = level
+
+if(state.level<setMinimum){
+state.level=setMinimum
+Cooling.setLevel(state.level)
+log.debug "Thermostat SetLevel below limit: $level.  Reset to minimum Temperature: $setMinimum"
+}else if(state.level>setMaximum){
+state.level=setMaximum
+Cooling.setLevel(state.level)
+log.debug "Thermostat SetLevel below limit: $level.  Reset to maximum Temperature: $setMaximum"
+}
+
+log.debug "switchSetLevelHandler Event: ${state.level} | TempMode: $TempMode"
+    state.ThermoCPoint = thermostat.currentValue("coolingSetpoint")
+//thermostat.setCoolingSetpoint(state.level)
+thermostat.quickSetCool(state.level)
+log.debug "state.ThermoCPoint: $state.ThermoCPoint | Level: $state.level"
+}
+
+//------------------SetPoint-Cooling---------------
+	def coolingSetpoint(evt) {
+	def TempMode = "Cooling"
+    state.TempMode = TempMode
+		log.debug ""
+		//log.debug "coolingSetpoint: $evt, $settings"
+	log.debug "coolingSetpoint Event Value: ${evt.value}" //  which event fired is here log.info
+	log.debug "coolingSetpoint Event Name: ${evt.name}"   //  name of device firing it here log.info
+
+  	def ThermoPoint = thermostat.currentValue("coolingSetpoint")
+     // log.debug "ThermoPoint: $ThermoPoint " + TempMode
+    def ThermoCoolPoint = evt.value.toFloat()
+	ThermoCoolPoint = ThermoCoolPoint.toInteger()
+	log.debug("current coolingsetpoint is $ThermoCoolPoint")
+    state.ThermoPoint = ThermoPoint
+    log.debug "CSP - state.ThermoPoint: $state.ThermoPoint | Level: $state.level"
+    if(state.ThermoPoint != state.level){
+		Cooling.setLevel(ThermoCoolPoint)
+        }
+		Notification()
+   }
+//------------------SetPoint-Heating---------------   
+   def heatingSetpointHandler(evt) {
+   def TempMode = "Heating"
+   state.TempMode = TempMode
+        log.debug ""
+       // log.debug "heatingSetpoint: $evt, $settings"
+    log.debug "heatingSetpoint Event Value: ${evt.value}" //  which event fired is here
+	log.debug "heatingSetpoint Event Name: ${evt.name}"   //  name of device firing it here
+
+  	def ThermoPoint = thermostat.currentValue("heatingSetpoint")
+      //log.debug "ThermoPoint: $ThermoPoint " + TempMode
+    def ThermoHeatPoint = evt.value.toFloat()
+	ThermoHeatPoint = ThermoHeatPoint.toInteger()
+	log.debug("current heatingsetpoint is $ThermoHeatPoint")
+    state.ThermoPoint = ThermoPoint
+     log.debug "HSP - state.ThermoPoint: $state.ThermoPoint | $state.level"
+     if(state.ThermoPoint != state.level){
+		Heating.setLevel(ThermoHeatPoint)
+        }
+		Notification()
+
+}
+def Notification(){
+          if (pushNotification_Setpoint) {
+            log.debug "Notify --> Thermostat SetPoint: $state.ThermoPoint ($state.TempMode)"
+            sendNotificationEvent("Thermostat SetPoint: $state.ThermoPoint " + state.TempMode)
+            log.debug "NOTIFY---------------------------------------------"
+        	}
+}

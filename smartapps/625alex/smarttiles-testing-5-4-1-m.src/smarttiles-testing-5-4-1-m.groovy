@@ -1287,29 +1287,29 @@ def customCSS() {
 
 
 
-.tile.switch[data-device='26c79be6-4dd9-4bf7-90cc-cc07213c772b'] .icon i.inactive:before {content : ""}
-.tile.switch[data-device='26c79be6-4dd9-4bf7-90cc-cc07213c772b'] .icon i.active:before {content : ""}
-.tile.switch[data-device='0efbbf1e-0e00-42c8-9d5a-f5e497f36af5'] .icon i.inactive:before {content : ""}
-.tile.switch[data-device='0efbbf1e-0e00-42c8-9d5a-f5e497f36af5'] .icon i.active:before {content : ""}
-.tile.switch[data-device='6102c684-898c-404b-b469-23882d33c827'] .icon i.inactive:before {content : ""}
-.tile.switch[data-device='6102c684-898c-404b-b469-23882d33c827'] .icon i.active:before {content : ""}
-.tile.presence[data-device='2295e34d-0666-4515-a093-4dfbb539bcd5'] .icon i.inactive:before {content : ""}
-.tile.presence[data-device='2295e34d-0666-4515-a093-4dfbb539bcd5'] .icon i.active:before {content : ""}
-.tile.presence[data-device='5f181f7a-ca13-47a6-96c4-ddc3b05b147f'] .icon i.inactive:before {content : ""}
-.tile.presence[data-device='5f181f7a-ca13-47a6-96c4-ddc3b05b147f'] .icon i.active:before {content : ""}
-.tile.presence[data-device='b40cff46-b4c1-4079-b8bb-72e8d82c22b7'] .icon i.inactive:before {content : ""}
-.tile.presence[data-device='b40cff46-b4c1-4079-b8bb-72e8d82c22b7'] .icon i.active:before {content : ""}
+.tile.switch[data-device='3e2aa128-f3c8-4de6-8ea4-cd9320964c01'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='3e2aa128-f3c8-4de6-8ea4-cd9320964c01'] .icon i.active:before {content : ""}
+.tile.switch[data-device='98d850b8-e5e7-4f3b-bb3b-31a71a5f1fff'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='98d850b8-e5e7-4f3b-bb3b-31a71a5f1fff'] .icon i.active:before {content : ""}
+.tile.switch[data-device='d9e15e4d-8180-44eb-9bc5-4b0e85534d3d'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='d9e15e4d-8180-44eb-9bc5-4b0e85534d3d'] .icon i.active:before {content : ""}
+.tile.presence[data-device='08056fd6-a25c-4da4-ac64-741fd2b36695'] .icon i.inactive:before {content : ""}
+.tile.presence[data-device='08056fd6-a25c-4da4-ac64-741fd2b36695'] .icon i.active:before {content : ""}
+.tile.presence[data-device='78c6e9ab-9796-4bd2-b49e-f31944f1a373'] .icon i.inactive:before {content : ""}
+.tile.presence[data-device='78c6e9ab-9796-4bd2-b49e-f31944f1a373'] .icon i.active:before {content : ""}
+.tile.presence[data-device='457d2ea9-b8a6-4314-96c2-8d7245627fda'] .icon i.inactive:before {content : ""}
+.tile.presence[data-device='457d2ea9-b8a6-4314-96c2-8d7245627fda'] .icon i.active:before {content : ""}
 .tile.switch[data-device='61ae9c40-a5e9-4d31-9a9d-867b00f4bf59'] .icon i.inactive:before {content : ""}
 .tile.switch[data-device='61ae9c40-a5e9-4d31-9a9d-867b00f4bf59'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanDisarmed.png);position:relative;right:15px;top:5px}
-.tile.switch[data-device='8282a392-9eeb-433f-96e9-82960d07455b'] .icon i.inactive:before {content : ""}
-.tile.switch[data-device='8282a392-9eeb-433f-96e9-82960d07455b'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanArmed.png);position:relative;right:15px;top:5px}
+.tile.switch[data-device='b87357ce-6ce9-4aed-9b1c-e9c8cfab472f'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='b87357ce-6ce9-4aed-9b1c-e9c8cfab472f'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanArmed.png);position:relative;right:15px;top:5px}
 .tile.switch[data-device='a23fd32a-3ccb-4f3a-97ac-ba6ef7f84fa6'] .icon i.inactive:before {content : ""}
 .tile.switch[data-device='a23fd32a-3ccb-4f3a-97ac-ba6ef7f84fa6'] .icon i.active:before {content : url(https://swindmiller.github.io/BatmanStay.png);position:relative;right:15px;top:5px}
 .dashboard.tile[data-link-i="1"] .icon a i::before {content: "";}
-.tile.switch[data-device='33c6edc1-9035-4983-bf0b-63dd957e35f1'] .icon i.inactive:before {content : ""}
-.tile.switch[data-device='33c6edc1-9035-4983-bf0b-63dd957e35f1'] .icon i.active:before {content : "";color:#FFFF00}
-.tile.contact[data-device='fab2129e-ff3c-4b4e-94f2-fc286df0dbe2'] .icon i.active:before {;color:#59FF00}
-.tile.contact[data-device='fab2129e-ff3c-4b4e-94f2-fc286df0dbe2'] .icon i.inactive:before {;color:#990000}
+.tile.switch[data-device='6d17d8ff-f139-4791-b2b5-23da1d09db3e'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='6d17d8ff-f139-4791-b2b5-23da1d09db3e'] .icon i.active:before {content : "";color:#FFFF00}
+.tile.contact[data-device='e0d5d774-22ea-43fb-80f5-a46d0c6eead2'] .icon i.active:before {;color:#59FF00}
+.tile.contact[data-device='e0d5d774-22ea-43fb-80f5-a46d0c6eead2'] .icon i.inactive:before {;color:#990000}
 .history-list .presence i:before {content: "";}
 /*** Custonm CSS End *****/
 </style>
