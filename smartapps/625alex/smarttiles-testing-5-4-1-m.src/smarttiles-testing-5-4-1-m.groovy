@@ -1293,6 +1293,8 @@ def customCSS() {
 .tile.switch[data-device='98d850b8-e5e7-4f3b-bb3b-31a71a5f1fff'] .icon i.active:before {content : ""}
 .tile.switch[data-device='d9e15e4d-8180-44eb-9bc5-4b0e85534d3d'] .icon i.inactive:before {content : ""}
 .tile.switch[data-device='d9e15e4d-8180-44eb-9bc5-4b0e85534d3d'] .icon i.active:before {content : ""}
+.tile.switch[data-device='b2577740-5505-4943-ba45-8517f4cab0cc'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='b2577740-5505-4943-ba45-8517f4cab0cc'] .icon i.active:before {content : ""}
 .tile.presence[data-device='08056fd6-a25c-4da4-ac64-741fd2b36695'] .icon i.inactive:before {content : ""}
 .tile.presence[data-device='08056fd6-a25c-4da4-ac64-741fd2b36695'] .icon i.active:before {content : ""}
 .tile.presence[data-device='78c6e9ab-9796-4bd2-b49e-f31944f1a373'] .icon i.inactive:before {content : ""}
@@ -1310,6 +1312,12 @@ def customCSS() {
 .tile.switch[data-device='6d17d8ff-f139-4791-b2b5-23da1d09db3e'] .icon i.active:before {content : "";color:#FFFF00}
 .tile.contact[data-device='e0d5d774-22ea-43fb-80f5-a46d0c6eead2'] .icon i.active:before {;color:#59FF00}
 .tile.contact[data-device='e0d5d774-22ea-43fb-80f5-a46d0c6eead2'] .icon i.inactive:before {;color:#990000}
+.tile.switch[data-device='07ba2415-beee-4671-8316-861ae5f6667e'] .icon i.inactive:before {content : url(https://swindmiller.github.io/lights-off.png);position:relative;right:15px;top:20px}
+.tile.switch[data-device='07ba2415-beee-4671-8316-861ae5f6667e'] .icon i.active:before {content : url(https://swindmiller.github.io/lights.png);position:relative;right:15px;top:20px}
+.tile.switch[data-device='7e8272aa-b8fd-488d-a20e-2776b865d13f'] .icon i.inactive:before {content : url(https://swindmiller.github.io/dog.png);position:relative;right:0px;top:25px}
+.tile.switch[data-device='7e8272aa-b8fd-488d-a20e-2776b865d13f'] .icon i.active:before {content : url(https://swindmiller.github.io/dog-on.png);position:relative;right:0px;top:25px}
+.tile.switch[data-device='ffedee32-0053-4441-93a3-659519622d50'] .icon i.inactive:before {content : ""}
+.tile.switch[data-device='ffedee32-0053-4441-93a3-659519622d50'] .icon i.active:before {content : "";color:#59FF00}
 .history-list .presence i:before {content: "";}
 /*** Custonm CSS End *****/
 </style>
