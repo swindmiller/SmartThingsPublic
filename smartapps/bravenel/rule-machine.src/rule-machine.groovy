@@ -1,12 +1,16 @@
 /**
  *  Rule Machine
  *
- *  Copyright 2015, 2016 Bruce Ravenel and Mike Maxwell
+ *  Copyright 2015, 2016 Bruce Ravenel
  *
- *  Version 1.7.6a   24 Feb 2016
+ *  Version 1.9.0   24 Mar 2016
  *
  *	Version History
  *
+ *	1.9.0	24 Mar 2016		Updates for Rule, small bug fixes
+ *	1.8.2	9 Mar 2016		Changed startup page for installation
+ *	1.8.1	3 Mar 2016		Changed method of getting Rule version
+ *	1.8.0	2 Mar 2016		Clean up, added Door control
  *	1.7.6	24 Feb 2016		Added User Guide link, fixed Rule truth mechanism
  *	1.7.5	21 Feb 2016		Improved custom command selection
  *	1.7.4	20 Feb 2016		Added saved command display, UI improvements
@@ -22,14 +26,13 @@
  *	1.6.1	24 Dec 2015		UI improvement
  *	1.6.0	23 Dec 2015		Added expert commands per Mike Maxwell
  *
- *  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- *  in compliance with the License. You may obtain a copy of the License at:
+ *  This software if free for Private Use. You may use and modify the software without distributing it.
+ *  
+ *  This software and derivatives may not be used for commercial purposes.
+ *  You may not modify, distribute or sublicense this software.
+ *  You may not grant a sublicense to modify and distribute this software to third parties not included in the license.
  *
- *      http://www.apache.org/licenses/LICENSE-2.0  
- *
- *  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed
- *  on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License
- *  for the specific language governing permissions and limitations under the License.
+ *  Software is provided without warranty and the software author/license owner cannot be held liable for damages.
  *
  */
 
@@ -47,6 +50,7 @@ definition(
 
 preferences {
 	page(name: "mainPage")
+    page(name: "firstPage")
 	page(name: "removePage")
 	//expert pages
 	page(name: "customCommandsPAGE")
@@ -57,23 +61,25 @@ preferences {
 
 def mainPage() {
 	if(!state.setup) firstRun()
-    if(state.ruleState) state.ruleState = null  // obsolete
-    def nApps = childApps.size()
-    dynamicPage(name: "mainPage", title: "Installed Rules, Triggers and Actions " + (nApps > 0 ? "[$nApps]" : ""), install: true, uninstall: false) {
-    	if(!state.setup) initialize(true)
-        section {
-            app(name: "childRules", appName: "Rule", namespace: "bravenel", title: "Create New Rule...", multiple: true)
-        }
-		section ("Expert Features") {
-			href("customCommandsPAGE", title: null, description: anyCustom() ? "Custom Commands..." : "Tap to create Custom Commands", state: anyCustom())
-        }
-        section ("Rule Machine User Guide") {
-			href url:"https://community.smartthings.com/t/rule-machine-user-guide/40176", style:"embedded", required:false, description:"Tap to view User Guide", title: ""
-        }
-        section ("Remove Rule Machine"){
-        	href "removePage", description: "Tap to remove Rule Machine and Rules", title: ""
-        }
-        if(state.ver) section ("Version 1.7.6a/" + state.ver) { }
+    else {
+    	if(state.ruleState) state.ruleState = null  // obsolete
+    	def nApps = childApps.size()
+    	dynamicPage(name: "mainPage", title: "Installed Rules, Triggers and Actions " + (nApps > 0 ? "[$nApps]" : ""), install: true, uninstall: false) {
+    		if(!state.setup) initialize(true)
+        	section {
+            	app(name: "childRules", appName: "Rule", namespace: "bravenel", title: "Create New Rule...", multiple: true)
+        	}
+			section ("Expert Features") {
+				href("customCommandsPAGE", title: null, description: anyCustom() ? "Custom Commands..." : "Tap to create Custom Commands", state: anyCustom())
+        	}
+        	section ("Rule Machine User Guide") {
+				href url:"https://community.smartthings.com/t/rule-machine-user-guide/40176", style:"embedded", required:false, description:"Tap to view User Guide", title: ""
+        	}
+        	section ("Remove Rule Machine"){
+        		href "removePage", description: "Tap to remove Rule Machine and Rules", title: ""
+        	}
+			section ("Version 1.9.0/" + (nApps > 0 ? "${childApps[0].appVersion()}" : "---")) { }
+    	}
     }
 }
 
@@ -93,6 +99,13 @@ def updated() {
 def firstRun() {
 	state.setup = true
 	state.ruleSubscribers = [:]
+    dynamicPage(name: "firstPage", title: "Hit Done to install Rule Machine", install: true, uninstall: false) { }
+}
+
+def childVersion() {
+	def result = "---"
+	if(childApps.size() > 0) result = childApps[0].appVersion()
+    return result
 }
 
 def ruleList(appLabel) {
@@ -270,7 +283,7 @@ def customCommandsPAGE() {
 }
 
 def getCapab() {  
-	def myOptions = ["Acceleration", "Actuator", "Button", "Carbon monoxide detector", "Contact", "Dimmer", "Energy meter", "Garage door", "Humidity", "Illuminance", 
+	def myOptions = ["Acceleration", "Actuator", "Button", "Carbon monoxide detector", "Contact", "Dimmer", "Door", "Energy meter", "Garage door", "Humidity", "Illuminance", 
     	"Lock", "Motion", "Power meter", "Presence", "Smoke detector", "Switch", "Temperature", "Thermostat", "Water sensor", "Music player"]
 	def result = input "myCapab", "enum", title: "Select capability for test device", required: false, options: myOptions.sort(), submitOnChange: true
 }
@@ -311,6 +324,10 @@ def getDevs() {
 		case "Garage door":
 			thisName = "garage door"
 			thisCapab = "garageDoorControl"
+			break
+		case "Door":
+			thisName = "door"
+			thisCapab = "doorControl"
 			break
 		case "Lock":
 			thisName = "lock"
@@ -566,7 +583,7 @@ def getParamsAsList(cpTypes){
 				result << "${cpVal.value}" 
 			} else if (cpType.value == "decimal"){
 				result << cpVal.value.toBigDecimal()
-			} else {
+			} else { // if (cpType.value == "number" && cpVal.value.isInteger()){
 				result << cpVal.value.toInteger() 
 			}
 		} else {
@@ -623,26 +640,27 @@ def commandExists(cmd){
 	return result
 }
 def addCommand(){
-	def capabs = [	"Acceleration" : "accelerationSensor", 
-    				"Button" : "button",
-    				"Carbon monoxide detector" : "carbonMonoxideDetector", 
-                    "Contact" : "contactSensor", 
-                    "Dimmer" : "switchLevel",
-                    "Energy meter" : "energyMeter", 
-                    "Garage door" : "garageDoorControl", 
-                    "Humidity" : "humiditySensor", 
-                    "Illuminance" : "illuminanceSensor", 
-    				"Lock" : "lock", 
-                    "Motion" : "motionSensor", 
-                    "Power meter" : "powerMeter", 
-                    "Presence" : "presenceSensor", 
-                    "Smoke detector" : "smokeDetector", 
-                    "Switch" : "switch", 
-                    "Temperature" : "temperatureMeasurement", 
-                    "Thermostat" : "thermostat",
-        			"Water sensor" : "waterSensor", 
-                    "Music player" : "musicPlayer", 
-                    "Actuator" : "actuator"]
+	def capabs = [	"Acceleration" : 				"accelerationSensor", 
+    				"Button" : 						"button",
+    				"Carbon monoxide detector" :	"carbonMonoxideDetector", 
+                    "Contact" : 					"contactSensor", 
+                    "Dimmer" : 						"switchLevel",
+                    "Door" : 						"doorControl", 
+                    "Energy meter" : 				"energyMeter", 
+                    "Garage door" : 				"garageDoorControl", 
+                    "Humidity" : 					"humiditySensor", 
+                    "Illuminance" : 				"illuminanceSensor", 
+    				"Lock" : 						"lock", 
+                    "Motion" : 						"motionSensor", 
+                    "Power meter" : 				"powerMeter", 
+                    "Presence" : 					"presenceSensor", 
+                    "Smoke detector" : 				"smokeDetector", 
+                    "Switch" : 						"switch", 
+                    "Temperature" : 				"temperatureMeasurement", 
+                    "Thermostat" : 					"thermostat",
+        			"Water sensor" : 				"waterSensor", 
+                    "Music player" : 				"musicPlayer", 
+                    "Actuator" : 					"actuator"]
 	def result
 	def newCmd = getCmdLabel()
 	def found = commandExists(newCmd)
@@ -742,7 +760,6 @@ def getDeviceCommands(){
 	return result
 }
 
-def isExpert(ver){
-	state.ver = ver
+def isExpert(){
 	return getCommands().size() > 0
 }
